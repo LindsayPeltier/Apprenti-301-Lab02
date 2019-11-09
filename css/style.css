@@ -1,26 +1,22 @@
-img{
-  width: 350px;
-  height: auto;
-}
 section{
-  height: 25%;
-  width: 25%;
-  justify-content: center;
-  text-align: center;
-  margin: 20px;
+  border: 2px solid lightslategray;
+  border-radius: 5%;
+  background-color: rgb(148, 146, 146);
 }
-.flex-container{
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; 
-  align-items: baseline;
-  align-self: auto;
+body{
+  background-color: rgb(38, 39, 39);
 }
-
-header{
- text-align: center;
+h1, h2{
+  font-family: 'Poppins', sans-serif;
+}
+h1{
+  font-size: 4.8em;
 }
 
-#photo-template{
-  display: none;
+h2{
+  font-size: 2.5em;
+}
+
+p{
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }

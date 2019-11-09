@@ -5,7 +5,7 @@
 section{
   border: 2px solid lightslategray;
   border-radius: 5%;
-  background-color: rgb(245, 214, 218);
+  background-color: rgb(243, 236, 237);
 }
 
 section{
@@ -33,6 +33,3 @@ header{
  text-align: center;
 }
 
-#photo-template{
-  display: none;
-}

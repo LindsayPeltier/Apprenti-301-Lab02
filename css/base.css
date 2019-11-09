@@ -1,9 +1,9 @@
-@import url(layout.css);
+@import url(layouts.css);
 @import url(style.css); 
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 body, html{
   margin: 0;
-  background: #ece9e6;
+  background: #f0a555;
   font-family: 'Poppins', sans-serif;
 }
