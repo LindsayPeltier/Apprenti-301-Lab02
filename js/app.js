@@ -1,52 +1,122 @@
-'use strict';
+'using strict';
 
-//Photo Constructor
-function Photo(photo) {
-  this.image_url = photo.image_url;
-  this.title = photo.title;
-  this.description = photo.description;
-  this.keyword = photo.keyword;
-  this.horns = photo.horns;
+function Img(img, page){
+  this.img_url = img.image_url;
+  this.title = img.title;
+  this.description = img.description;
+  this.keyword = img.keyword;
+  this.horns = img.horns;
+  this.page = page;
 }
-Photo.allPhotos = [];
 
-Photo.prototype.render = function() {
+Img.allImgs = [];
+Img.pageData;
 
-  //1. Create Element
-  let photoClone = $('#photo-template').clone();
-  console.log(photoClone);
-  let $photoClone = $(photoClone[0]);
-  console.log($photoClone);
 
-  //2. Give it Content
-  $photoClone.find('h2').text(this.title);
-  $photoClone.find('img').attr('src', this.image_url);
-  $photoClone.find('p').text(this.description);
-  $photoClone.find('p').text(this.keyword);
-  $photoClone.find('p').text(this.horns);
-  $photoClone.removeClass('clone');
-  $photoClone.attr('class', this.title);
-
-  //3. Append to the DOM
-  $photoClone.appendTo('main');
-
+Img.prototype.render = function(){
+  let template = $('#photo-template').html();
+  let templateRender = Handlebars.compile(template);
+  return templateRender(this);
 };
 
-Photo.readJson = () => {
-  $.get('./data/page-1.json')
+Img.readJSON = (source, page) => {
+  $.get(source)
     .then(data => {
-      data.forEach(item=> {
-        Photo.allPhotos.push(new Photo(item));
-        //console.log(item);
+      data.forEach(img => {
+        Img.allImgs.push(new Img(img, page));
       });
     })
-    .then(Photo.loadPhotos);
+    .then(() => Img.loadImgs(page))
+    .then(() => Img.getPageData())
+    .then(() => Img.populateKeyword())
+    .then(() => Img.hideImages())
+    .then(() => Img.handlePage())
+    .then(() => Img.determineSort())
+    .then(Img.startListening);
 };
 
-Photo.loadPhotos = () => {
-  Photo.allPhotos.forEach(photo => photo.render());
+Img.loadImgs = (page) => {
+  if(page === undefined) page = 'page1';
+  Img.allImgs.forEach(img => {
+    if(img.page === page) $('.flex-container').append(img.render());
+  });
 };
 
-$(() => Photo.readJson());
+Img.getPageData = () => {
+  Img.pageData = $('section');
+};
+
+Img.populateKeyword = () => {
+  const ids = [];
+  for(let i = 0; i < Img.pageData.length; i++){
+    ids.push(Img.pageData[i].id);
+  }
+  let options = [...new Set(ids)];
+  options.forEach(opt => {
+    $('#filter').append(Img.createOption(opt));
+  });
+};
+
+Img.createOption = img => {
+  let $option = $('<option></option>');
+  $option.attr('value', img);
+  $option.text(img);
+  return $option;
+};
+
+Img.hideImages = () => {
+  $('section').hide();
+};
+
+Img.handleFilter = () => {
+  Img.hideImages();
+  let page = $('#page').val();
+  if(page === 'default') page = 'page1';
+  let selection = $('#filter').val();
+  $(`.${page}.${selection}`).show();
+};
+
+Img.handlePage = () => {
+  let page;
+  Img.hideImages();
+  $('#filter').val('default');
+  $('#sort').val('default');
+  $('#page').val() === 'default' ? page = 'page1' : page = $('#page').val();
+  $(`.${page}`).show();
+};
 
 
+Img.determineSort = () => {
+
+  $('#sort').val() === 'horn' ? Img.sortBy('horns') : Img.sortBy('title');
+};
+
+
+
+Img.sortBy= type => {
+  let data = Img.allImgs;
+  data.sort(Img[type]);
+  Img.allImgs = data;
+  $('.flex-container').empty();
+  Img.loadImgs();
+};
+
+Img.title= (a, b) => {
+  return a.title.localeCompare(b.title);
+};
+
+Img.horns = (a ,b) => {
+  return a.horns - b.horns;
+};
+
+Img.startListening = () => {
+  $('#filter').change(Img.handleFilter);
+  $('#page').change(Img.handlePage);
+  $('#sort').change(Img.determineSort);
+};
+
+
+$(() => {
+  Img.readJSON('/data/page-1.json', 'page1');
+  Img.readJSON('/data/page-2.json', 'page2');
+});
