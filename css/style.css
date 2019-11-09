@@ -1,13 +1,7 @@
-#photo-template{
-  display: none;
+img{
+  width: 350px;
+  height: auto;
 }
-
-section{
-  border: 2px solid lightslategray;
-  border-radius: 5%;
-  background-color: rgb(245, 214, 218);
-}
-
 section{
   height: 25%;
   width: 25%;
@@ -15,18 +9,12 @@ section{
   text-align: center;
   margin: 20px;
 }
-
 .flex-container{
   display: flex;
   justify-content: center;
   flex-wrap: wrap; 
   align-items: baseline;
   align-self: auto;
-}
-
-img{
-  width: 350px;
-  height: auto;
 }
 
 header{

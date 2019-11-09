@@ -1,5 +1,6 @@
 'using strict';
 
+//constuctor
 function Img(img, page){
   this.img_url = img.image_url;
   this.title = img.title;
@@ -12,13 +13,14 @@ function Img(img, page){
 Img.allImgs = [];
 Img.pageData;
 
-
+//Render prototype
 Img.prototype.render = function(){
   let template = $('#photo-template').html();
   let templateRender = Handlebars.compile(template);
   return templateRender(this);
 };
 
+//Read json
 Img.readJSON = (source, page) => {
   $.get(source)
     .then(data => {
@@ -85,13 +87,9 @@ Img.handlePage = () => {
   $(`.${page}`).show();
 };
 
-
 Img.determineSort = () => {
-
   $('#sort').val() === 'horn' ? Img.sortBy('horns') : Img.sortBy('title');
 };
-
-
 
 Img.sortBy= type => {
   let data = Img.allImgs;
@@ -115,7 +113,7 @@ Img.startListening = () => {
   $('#sort').change(Img.determineSort);
 };
 
-
+//Innervate
 $(() => {
   Img.readJSON('/data/page-1.json', 'page1');
   Img.readJSON('/data/page-2.json', 'page2');

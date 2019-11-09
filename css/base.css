@@ -1,3 +1,9 @@
-*{
-  background-color: seashell;
+@import url(layout.css);
+@import url(style.css); 
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+body, html{
+  margin: 0;
+  background: #ece9e6;
+  font-family: 'Poppins', sans-serif;
 }
