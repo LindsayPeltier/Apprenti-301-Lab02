@@ -1,14 +1,16 @@
 section{
   border: 2px solid lightslategray;
-  border-radius: 5%;
-  background-color: rgb(148, 146, 146);
+  background-color: rgb(241, 234, 234);
 }
+
 body{
   background-color: rgb(38, 39, 39);
 }
+
 h1, h2{
   font-family: 'Poppins', sans-serif;
 }
+
 h1{
   font-size: 4.8em;
 }
