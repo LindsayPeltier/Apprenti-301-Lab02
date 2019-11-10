@@ -1,6 +1,5 @@
 'using strict';
 
-//constuctor
 function Img(img, page){
   this.img_url = img.image_url;
   this.title = img.title;
@@ -13,14 +12,12 @@ function Img(img, page){
 Img.allImgs = [];
 Img.pageData;
 
-//Render prototype
 Img.prototype.render = function(){
   let template = $('#photo-template').html();
   let templateRender = Handlebars.compile(template);
   return templateRender(this);
 };
 
-//Read json
 Img.readJSON = (source, page) => {
   $.get(source)
     .then(data => {
@@ -38,9 +35,10 @@ Img.readJSON = (source, page) => {
 };
 
 Img.loadImgs = (page) => {
+  $('main').empty();
   if(page === undefined) page = 'page1';
   Img.allImgs.forEach(img => {
-    if(img.page === page) $('.flex-container').append(img.render());
+    if(img.page === page) $('main').append(img.render());
   });
 };
 
@@ -84,7 +82,7 @@ Img.handlePage = () => {
   $('#filter').val('default');
   $('#sort').val('default');
   $('#page').val() === 'default' ? page = 'page1' : page = $('#page').val();
-  $(`.${page}`).show();
+  Img.loadImgs(page);
 };
 
 Img.determineSort = () => {
@@ -95,7 +93,6 @@ Img.sortBy= type => {
   let data = Img.allImgs;
   data.sort(Img[type]);
   Img.allImgs = data;
-  $('.flex-container').empty();
   Img.loadImgs();
 };
 
@@ -113,7 +110,7 @@ Img.startListening = () => {
   $('#sort').change(Img.determineSort);
 };
 
-//Innervate
+
 $(() => {
   Img.readJSON('/data/page-1.json', 'page1');
   Img.readJSON('/data/page-2.json', 'page2');
